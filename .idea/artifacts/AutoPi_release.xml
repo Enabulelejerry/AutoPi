@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact name="AutoPi_release">
+    <output-path>$PROJECT_DIR$/out/artifacts/AutoPi_release</output-path>
+    <root id="root">
+      <element id="archive" name="AutoPi.jar">
+        <element id="module-output" name="AutoPi" />
+      </element>
+      <element id="file-copy" path="$PROJECT_DIR$/config.txt" />
+    </root>
+  </artifact>
+</component>
