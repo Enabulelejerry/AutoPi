@@ -1,5 +1,7 @@
 package codes.nibby.autopi;
 
+import codes.nibby.autopi.ui.InputHandler;
+
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.VolatileImage;
@@ -12,6 +14,7 @@ public class AutoPi extends Canvas implements Runnable {
     private volatile boolean running = false;
     private Thread thread;
 
+    private InputHandler input;
     private Graphics2D graphics;
     private VolatileImage screenImage;
 
@@ -20,6 +23,11 @@ public class AutoPi extends Canvas implements Runnable {
     }
 
     AutoPi() {
+        input = new InputHandler();
+        addMouseListener(input);
+        addMouseMotionListener(input);
+        addKeyListener(input);
+
         int appWidth = config.getInt(AppConfig.Key.DISPLAY_WIDTH);
         int appHeight = config.getInt(AppConfig.Key.DISPLAY_HEIGHT);
         Dimension size = new Dimension(appWidth, appHeight);
@@ -108,7 +116,7 @@ public class AutoPi extends Canvas implements Runnable {
     }
 
     private void update() {
-
+        input.update();
     }
 
     public void start() {
@@ -123,5 +131,9 @@ public class AutoPi extends Canvas implements Runnable {
         if (running) {
             running = false;
         }
+    }
+
+    public Graphics2D getDrawGraphics() {
+        return graphics;
     }
 }

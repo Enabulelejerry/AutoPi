@@ -7,11 +7,13 @@ import static codes.nibby.autopi.AppConfig.*;
 
 public class Main  {
 
+    private static AutoPi app;
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                AutoPi app = new AutoPi();
+                app = new AutoPi();
                 boolean debug = AutoPi.config.getBoolean(Key.DEBUG_MODE);
 
                 JFrame frame = new JFrame();
@@ -34,4 +36,7 @@ public class Main  {
         });
     }
 
+    public static AutoPi getApp() {
+        return app;
+    }
 }
