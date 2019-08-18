@@ -1,5 +1,6 @@
 package codes.nibby.autopi.ui;
 
+import codes.nibby.autopi.screen.Screen;
 import codes.nibby.autopi.ui.animation.Animation;
 import codes.nibby.autopi.ui.animation.AnimationType;
 import codes.nibby.autopi.ui.animation.RestoreAnimation;
@@ -10,16 +11,36 @@ import java.util.Map;
 
 public abstract class Component {
 
-    private int x, y, width, height;
-    private int dx, dy, dWidth, dHeight;
+    /*
+        A unique ID is assigned to this component whenever it is added to a Screen object.
+     */
+    private int id;
+    private static int nextId = 0;
 
-    private int offsetX, offsetY;
-    private Color backgroundColor, foregroundColor;
+    // Functional positional attributes
+    private int x;
+    private int y;
+    private int width;
+    private int height;
 
+    // Visible bounds as shown on screen
+    private int dx;
+    private int dy;
+    private int dWidth;
+    private int dHeight;
+
+    // Draw offset (indicated by background pan animation)
+    private int offsetX;
+    private int offsetY;
+
+    // Component color attributes
+    private Color backgroundColor;
+    private Color foregroundColor;
     private Map<AnimationType, Animation> animations = new HashMap<>();
     private Animation currentAnim;
     private AnimationType lastPlayedAnimType;
 
+    // State control
     protected ComponentState state;
     protected boolean visible = true;
 
@@ -62,8 +83,9 @@ public abstract class Component {
         }
     }
 
-    public Animation setAnimation(AnimationType type) {
-        return animations.get(type);
+    public void setAnimation(AnimationType type, Animation animation) {
+        animation.onAdd(this);
+        animations.put(type, animation);
     }
 
     // Retrieves an animation event for component
@@ -164,6 +186,11 @@ public abstract class Component {
         this.offsetY = y;
     }
 
+    public void onAdd(Screen screen) {
+        id = nextId;
+        nextId++;
+    }
+
     public int getOffsetY() {
         return offsetY;
     }
@@ -186,5 +213,9 @@ public abstract class Component {
 
     public boolean isVisible() {
         return visible;
+    }
+
+    public int getId() {
+        return id;
     }
 }

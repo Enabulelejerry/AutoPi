@@ -1,5 +1,6 @@
 package codes.nibby.autopi;
 
+import codes.nibby.autopi.screen.Stage;
 import codes.nibby.autopi.ui.InputHandler;
 
 import java.awt.*;
@@ -9,6 +10,8 @@ import java.awt.image.VolatileImage;
 public class AutoPi extends Canvas implements Runnable {
 
     public static final String APP_TITLE = "AutoPi";
+    public static int APP_WIDTH = 0, APP_HEIGHT = 0;
+    public static int TARGET_FPS = 30;
     public static final AppConfig config = new AppConfig();
 
     private volatile boolean running = false;
@@ -17,6 +20,7 @@ public class AutoPi extends Canvas implements Runnable {
     private InputHandler input;
     private Graphics2D graphics;
     private VolatileImage screenImage;
+    private Stage stage;
 
     static {
         config.load();
@@ -28,9 +32,9 @@ public class AutoPi extends Canvas implements Runnable {
         addMouseMotionListener(input);
         addKeyListener(input);
 
-        int appWidth = config.getInt(AppConfig.Key.DISPLAY_WIDTH);
-        int appHeight = config.getInt(AppConfig.Key.DISPLAY_HEIGHT);
-        Dimension size = new Dimension(appWidth, appHeight);
+        APP_WIDTH = config.getInt(AppConfig.Key.DISPLAY_WIDTH);
+        APP_HEIGHT = config.getInt(AppConfig.Key.DISPLAY_HEIGHT);
+        Dimension size = new Dimension(APP_WIDTH, APP_HEIGHT);
         setSize(size);
         setMaximumSize(size);
         setMinimumSize(size);
@@ -38,6 +42,7 @@ public class AutoPi extends Canvas implements Runnable {
     }
 
     private void initialize() {
+        stage = new Stage();
 
         BufferStrategy strategy = getBufferStrategy();
         if (strategy == null) {
@@ -60,8 +65,8 @@ public class AutoPi extends Canvas implements Runnable {
 
         int fps = 0;
         long fpsTimer = System.currentTimeMillis();
-        int targetFps = config.getInt(AppConfig.Key.TARGET_FPS);
-        double nsPerTick = 1000000000.0d / targetFps;
+        TARGET_FPS = config.getInt(AppConfig.Key.TARGET_FPS);
+        double nsPerTick = 1000000000.0d / TARGET_FPS;
         long lastUpdateTime = System.nanoTime();
         double delta = 0d;
 
@@ -101,10 +106,11 @@ public class AutoPi extends Canvas implements Runnable {
     private void render() {
         if (screenImage != null) {
             this.graphics = screenImage.createGraphics();
-
             graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            graphics.setColor(Color.BLACK);
+            // TODO change this later
+            graphics.setColor(Color.WHITE);
             graphics.fillRect(0, 0, getWidth(), getHeight());
+            stage.render(graphics);
 
             BufferStrategy strategy = getBufferStrategy();
             if (strategy != null) {
@@ -116,6 +122,7 @@ public class AutoPi extends Canvas implements Runnable {
     }
 
     private void update() {
+        stage.update(input);
         input.update();
     }
 
@@ -135,5 +142,9 @@ public class AutoPi extends Canvas implements Runnable {
 
     public Graphics2D getDrawGraphics() {
         return graphics;
+    }
+
+    public InputHandler getInputHandler() {
+        return input;
     }
 }
