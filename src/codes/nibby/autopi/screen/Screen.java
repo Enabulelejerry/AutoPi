@@ -1,5 +1,7 @@
 package codes.nibby.autopi.screen;
 
+import codes.nibby.autopi.AutoPi;
+import codes.nibby.autopi.ui.ButtonListener;
 import codes.nibby.autopi.ui.Component;
 import codes.nibby.autopi.ui.InputHandler;
 import codes.nibby.autopi.ui.animation.Animation;
@@ -22,7 +24,7 @@ import java.util.Map;
  *
  * @author Kevin Yang
  */
-public abstract class Screen  {
+public abstract class Screen implements ButtonListener {
 
     // TODO Layout specifications
 
@@ -130,7 +132,7 @@ public abstract class Screen  {
         }
     }
 
-    public void onAdd() {
+    public void onAdd(AutoPi app) {
 
     }
 
@@ -155,4 +157,13 @@ public abstract class Screen  {
         return drawOffsetY;
     }
 
+    public void refreshColorScheme() {
+        for (Integer i : components.keySet()) {
+            List<Component> cList = components.get(i);
+            for (Component c : cList) {
+                c.setForegroundColor(c.getForegroundColorKey());
+                c.setBackgroundColor(c.getBackgroundColorKey());
+            }
+        }
+    }
 }

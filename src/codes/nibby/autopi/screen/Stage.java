@@ -1,6 +1,7 @@
 package codes.nibby.autopi.screen;
 
 import codes.nibby.autopi.AutoPi;
+import codes.nibby.autopi.ui.ColorScheme;
 import codes.nibby.autopi.ui.InputHandler;
 import codes.nibby.autopi.ui.animation.ScreenScrollType;
 
@@ -73,31 +74,43 @@ public class Stage {
             }
         }
 
-        if(objects.size() < 10 && drawShape) {
+        if(objects.size() < 4 && drawShape) {
             // Shape generation, its position size and growth is random
             float x = (float) (Math.random() * AutoPi.APP_WIDTH) -targetOffsetX;
             float y = (float) (Math.random() * AutoPi.APP_HEIGHT) - targetOffsetY;
             float alpha = (float) (Math.random() * 1.0f);
             float growth = (float) (Math.random() * 1) + 0.001f;
+            float strokeWidth = 1f + (float) (Math.random() * 3f);
 
-            addObject(new Shape(Shape.SQUARE, x, y, 1f, 1f, growth, 1f, alpha, 200, 200, 200));
+            Color c = ColorScheme.get("secondary.lighter");
+            int r = c.getRed();
+            int g = c.getGreen();
+            int b = c.getBlue();
+
+            addObject(new Shape(Shape.SQUARE, x, y, 1f, 1f, growth, strokeWidth, alpha, r, g, b));
         }
 
-        // Redraws the mouse circle
-        boolean respawnMouse = false;
-        if (mouseShape != null && input.isMousePressed(MouseEvent.BUTTON1)) {
-            respawnMouse = true;
-        }
-
-        if(mouseShape == null || respawnMouse) {
-            int mx = input.getMouseX();
-            int my = input.getMouseY();
-            float growth = 0.25f;
-            float alpha = 0.3f;
-            mouseShape = new Shape(Shape.CIRCLE, mx - offsetX, my - offsetY, 1f, 1f, growth, 3f ,alpha, 133, 188, 229);
-
-            addObject(mouseShape);
-        }
+//      TODO: Disabled for performance reasons on device
+//        // Redraws the mouse circle
+//        boolean respawnMouse = false;
+//        if (mouseShape != null && input.isMousePressed(MouseEvent.BUTTON1)) {
+//            respawnMouse = true;
+//        }
+//
+//        if(mouseShape == null || respawnMouse) {
+//            int mx = input.getMouseX();
+//            int my = input.getMouseY();
+//            float growth = 0.25f;
+//            float alpha = 0.3f;
+//
+//            Color c = ColorScheme.get("stage.ripple");
+//            int r = c.getRed();
+//            int g = c.getGreen();
+//            int b = c.getBlue();
+//            mouseShape = new Shape(Shape.CIRCLE, mx - offsetX, my - offsetY, 1f, 1f, growth, 3f ,alpha, r, g, b);
+//
+//            addObject(mouseShape);
+//        }
 
     }
 

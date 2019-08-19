@@ -33,8 +33,16 @@ public abstract class Component {
     private int offsetX;
     private int offsetY;
 
-    // Component color attributes
+    /*
+        Component color attributes. The background and foreground colors
+        are represented by string keys (see all keys @ ColorScheme).
+
+        This is to allow dynamic color change when dark mode is enabled
+        at night time.
+    */
+    private String backgroundColorKey;
     private Color backgroundColor;
+    private String foregroundColorKey;
     private Color foregroundColor;
     private Map<AnimationType, Animation> animations = new HashMap<>();
     private Animation currentAnim;
@@ -153,6 +161,11 @@ public abstract class Component {
         return backgroundColor;
     }
 
+    public void setBackgroundColor(String colorKey) {
+        this.backgroundColorKey = colorKey;
+        setBackgroundColor(ColorScheme.get(colorKey), true);
+    }
+
     public void setBackgroundColor(Color background, boolean permanent) {
         this.backgroundColor = background;
 
@@ -165,6 +178,11 @@ public abstract class Component {
 
     public Color getForegroundColor() {
         return foregroundColor;
+    }
+
+    public void setForegroundColor(String colorKey) {
+        this.foregroundColorKey = colorKey;
+        setForegroundColor(ColorScheme.get(colorKey), true);
     }
 
     public void setForegroundColor(Color foreground, boolean permanent) {
@@ -213,6 +231,14 @@ public abstract class Component {
 
     public boolean isVisible() {
         return visible;
+    }
+
+    public String getBackgroundColorKey() {
+        return backgroundColorKey;
+    }
+
+    public String getForegroundColorKey() {
+        return foregroundColorKey;
     }
 
     public int getId() {

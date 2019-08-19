@@ -1,5 +1,6 @@
 package codes.nibby.autopi.ui.animation;
 
+import codes.nibby.autopi.ui.ColorScheme;
 import codes.nibby.autopi.ui.Component;
 
 import java.awt.*;
@@ -13,14 +14,14 @@ import java.awt.*;
  */
 public class BackgroundColorAnimation extends Animation {
 
-    /** Target color to transition into */
-    private Color target;
+    /** Target color to transition into. This is a ColorScheme key. */
+    private String targetColorKey;
 
     /** Length of animation, in milliseconds */
     private int duration;
 
-    public BackgroundColorAnimation(Color target, int duration) {
-        this.target = target;
+    public BackgroundColorAnimation(String target, int duration) {
+        this.targetColorKey = target;
         this.duration = duration;
     }
 
@@ -33,9 +34,10 @@ public class BackgroundColorAnimation extends Animation {
         float progress = (float) elapsedTime / (float) duration;
 
         // Linear interpolation
-        int r = (int) ((1f - progress) * (float) bg.getRed() + progress * (float) target.getRed());
-        int g = (int) ((1f - progress) * (float) bg.getGreen() + progress * (float) target.getGreen());
-        int b = (int) ((1f - progress) * (float) bg.getBlue() + progress * (float) target.getBlue());
+        Color targetColor = ColorScheme.get(targetColorKey);
+        int r = (int) ((1f - progress) * (float) bg.getRed() + progress * (float) targetColor.getRed());
+        int g = (int) ((1f - progress) * (float) bg.getGreen() + progress * (float) targetColor.getGreen());
+        int b = (int) ((1f - progress) * (float) bg.getBlue() + progress * (float) targetColor.getBlue());
 
         // Correct boundaries
         if (r > 255)    r = 255;
@@ -57,8 +59,8 @@ public class BackgroundColorAnimation extends Animation {
         return System.currentTimeMillis() - getStartTime() > duration;
     }
 
-    public Color getTarget() {
-        return target;
+    public String getTargetColorKey() {
+        return targetColorKey;
     }
 
     public int getDuration() {
