@@ -25,6 +25,7 @@ public class Main  {
                 if (!debug) {
                     frame.setAlwaysOnTop(true);
                     frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                    frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 } else {
                     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     frame.setLocationRelativeTo(null);
