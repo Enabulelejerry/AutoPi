@@ -111,6 +111,7 @@ public class InputHandler implements MouseListener, MouseMotionListener, KeyList
         mouseX = e.getX();
         mouseY = e.getY();
         int button = e.getButton() - 1;
+        if (button < 0) button = 0;
         mouseState[button] = true;
     }
 
@@ -120,6 +121,7 @@ public class InputHandler implements MouseListener, MouseMotionListener, KeyList
         mouseX = e.getX();
         mouseY = e.getY();
         int button = e.getButton() - 1;
+        if (button < 0) button = 0;
         mouseState[button] = false;
     }
 
@@ -132,6 +134,7 @@ public class InputHandler implements MouseListener, MouseMotionListener, KeyList
         mouseX = e.getX();
         mouseY = e.getY();
         int button = e.getButton() - 1;
+        if (button < 0) button = 0;
         mouseState[button] = true;
     }
 
